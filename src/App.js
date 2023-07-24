@@ -24,7 +24,7 @@ import { useRef } from "react";
 
 function App() {
   const [data, setData] = useState([]);
-  const dataId = useRef(0); // 0부터 시작하게
+  const dataId = useRef(1); // 1부터 시작하게
 
   const onCreate = ({ author, content, emotion }) => {
     const created_date = new Date().getTime();
@@ -39,9 +39,17 @@ function App() {
     setData([newItem, ...data]); // newItem을 최상단에 올림
   };
 
-  const onDelete = (targetId) => {
+  const onRemove = (targetId) => {
     const newDiaryList = data.filter((it) => it.id !== targetId);
     setData(newDiaryList);
+  };
+
+  const onEdit = (targetId, newContent) => {
+    setData(
+      data.map((it) =>
+        it.id === targetId ? { ...it, content: newContent } : it
+      )
+    );
   };
 
   // onCreate로 setData에 데이터 추가
@@ -49,7 +57,7 @@ function App() {
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList diaryList={data} onDelete={onDelete} />
+      <DiaryList diaryList={data} onRemove={onRemove} onEdit={onEdit} />
     </div>
   );
 }
