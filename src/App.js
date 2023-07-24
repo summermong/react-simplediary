@@ -39,12 +39,17 @@ function App() {
     setData([newItem, ...data]); // newItem을 최상단에 올림
   };
 
+  const onDelete = (targetId) => {
+    const newDiaryList = data.filter((it) => it.id !== targetId);
+    setData(newDiaryList);
+  };
+
   // onCreate로 setData에 데이터 추가
   // diaryList에서 수정된 데이터 초기값을 받아옴
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList diaryList={data} />
+      <DiaryList diaryList={data} onDelete={onDelete} />
     </div>
   );
 }
