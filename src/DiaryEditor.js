@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 
-const DiaryEditor = () => {
+const DiaryEditor = ({ onCreate }) => {
   const authorInput = useRef();
   const contentInput = useRef();
 
@@ -20,16 +20,15 @@ const DiaryEditor = () => {
   const handleSubmit = () => {
     if (state.author.length < 1) {
       authorInput.current.focus();
-      console.log(authorInput.current);
       return;
     }
 
     if (state.content.length < 5) {
       contentInput.current.focus();
-      console.log(contentInput.current);
       return;
     }
 
+    onCreate(state);
     alert("저장 성공!");
   };
 
