@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 const DiaryItem = ({
   author,
@@ -74,4 +74,4 @@ const DiaryItem = ({
   );
 };
 
-export default DiaryItem;
+export default React.memo(DiaryItem);
