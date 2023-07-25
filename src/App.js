@@ -1,11 +1,15 @@
-import { act } from "react-dom/test-utils";
 import "./App.css";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
-import { useEffect, useRef, useMemo, useCallback, useReducer } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+  useReducer,
+} from "react";
 
 // reducer 함수는 컴포넌트 밖으로 꺼내주기
-
 const reducer = (state, action) => {
   switch (action.type) {
     case "INIT": {
@@ -25,7 +29,7 @@ const reducer = (state, action) => {
     }
     case "EDIT": {
       return state.map((it) =>
-        it.id === action.targetId ? { ...it, content: action.content } : it
+        it.id === action.targetId ? { ...it, content: action.newContent } : it
       );
     }
     default:
@@ -33,9 +37,12 @@ const reducer = (state, action) => {
   }
 };
 
-const App = () => {
-  // const [data, setData] = useState([]);
+// 코드 마지막 줄처럼 내보내줘야 하는데 Default는 하나만 할 수 있음
+// 하지만 export는 여러 개 써도 됨
+export const DiaryStateContext = React.createContext();
+export const DiaryDispatchContext = React.createContext();
 
+const App = () => {
   const [data, dispatch] = useReducer(reducer, []);
   const dataId = useRef(1); // 1부터 시작하게
 
@@ -75,6 +82,13 @@ const App = () => {
     dispatch({ type: "EDIT", targetId, newContent });
   }, []);
 
+  // DiaryDispatchContext에 넣을 dispatch들을 묶어주기
+  // 절대 재생성될 일 없게 의존성 배열 빈 배열로 전달
+  // useMemo를 안 쓰면 App 컴포넌트 재생성 시 똑같이 재생성됨 (최적화 망가짐)
+  const memoizedDispatches = useMemo(() => {
+    return { onCreate, onRemove, onEdit };
+  }, []);
+
   const getDiaryAnalysis = useMemo(() => {
     const goodCount = data.filter((it) => it.emotion >= 3).length;
     const badCount = data.length - goodCount;
@@ -85,17 +99,19 @@ const App = () => {
   // 구조 분해 할당으로 다시 받기
   const { goodCount, badCount, goodRation } = getDiaryAnalysis;
 
-  // onCreate로 setData에 데이터 추가
-  // diaryList에서 수정된 데이터 초기값을 받아옴
   return (
-    <div className="App">
-      <DiaryEditor onCreate={onCreate} />
-      <div> 전체 일기: {data.length} </div>
-      <div> 기분 좋은 일기 개수: {goodCount} </div>
-      <div> 기분 나쁜 일기 개수: {badCount} </div>
-      <div> 기분 좋은 일기 비율: {goodRation} </div>
-      <DiaryList diaryList={data} onRemove={onRemove} onEdit={onEdit} />
-    </div>
+    <DiaryStateContext.Provider value={data}>
+      <DiaryDispatchContext.Provider value={memoizedDispatches}>
+        <div className="App">
+          <DiaryEditor />
+          <div> 전체 일기: {data.length} </div>
+          <div> 기분 좋은 일기 개수: {goodCount} </div>
+          <div> 기분 나쁜 일기 개수: {badCount} </div>
+          <div> 기분 좋은 일기 비율: {goodRation} </div>
+          <DiaryList />
+        </div>
+      </DiaryDispatchContext.Provider>
+    </DiaryStateContext.Provider>
   );
 };
 
