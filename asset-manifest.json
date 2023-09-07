@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/react-simplediary/static/css/main.aa073c5e.css",
-    "main.js": "/react-simplediary/static/js/main.54070b9f.js",
+    "main.js": "/react-simplediary/static/js/main.88ced918.js",
     "index.html": "/react-simplediary/index.html",
     "main.aa073c5e.css.map": "/react-simplediary/static/css/main.aa073c5e.css.map",
-    "main.54070b9f.js.map": "/react-simplediary/static/js/main.54070b9f.js.map"
+    "main.88ced918.js.map": "/react-simplediary/static/js/main.88ced918.js.map"
   },
   "entrypoints": [
     "static/css/main.aa073c5e.css",
-    "static/js/main.54070b9f.js"
+    "static/js/main.88ced918.js"
   ]
 }
