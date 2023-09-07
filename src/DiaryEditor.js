@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
-import { DiaryDispatchContext } from "./App";
+import React, { useState, useRef, useEffect, useContext } from 'react';
+import { DiaryDispatchContext } from './App';
 
 const DiaryEditor = () => {
   // DiaryDispatchContext에 있는 onCreate 구조 분해 할당으로 가져오기
@@ -9,8 +9,8 @@ const DiaryEditor = () => {
   const contentInput = useRef();
 
   const [state, setState] = useState({
-    author: "",
-    content: "",
+    author: '',
+    content: '',
     emotion: 1,
   });
 
@@ -33,18 +33,18 @@ const DiaryEditor = () => {
     }
 
     onCreate(state);
-    alert("저장 성공!");
+    alert('저장 성공!');
 
     setState({
-      author: "",
-      content: "",
+      author: '',
+      content: '',
       emotion: 1,
     });
   };
 
   return (
     <div className="DiaryEditor">
-      <h2>오늘의 일기</h2>
+      <h2>오늘의 일기!</h2>
       <div>
         <input
           ref={authorInput}
